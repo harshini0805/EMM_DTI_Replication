@@ -1,0 +1,52 @@
+# Default configuration for EMM-DTI
+# This serves as the base config; dataset-specific configs override these values
+
+dataset:
+  name: human
+  data_dir: data/human
+  train_split: 0.7
+  val_split: 0.2
+  test_split: 0.1
+  random_seed: 42
+
+model:
+  # FCS Embedding dimension
+  fcs_embedding_dim: 128
+
+  # Mamba layer configuration
+  mamba_hidden_dim: 256
+  mamba_n_layers: 2
+  mamba_state_size: 16
+  mamba_expand_factor: 2
+
+  # CNN prediction head
+  cnn_out_channels: 3
+  cnn_kernel_size: 3
+
+  # Regularization
+  dropout: 0.1
+
+training:
+  batch_size: 32
+  learning_rate: 0.001
+  epochs: 100
+  early_stopping_patience: 10
+  device: cuda
+  num_workers: 4
+  pin_memory: true
+  mixed_precision: false
+
+optimization:
+  optimizer: adam
+  weight_decay: 1.0e-05
+  gradient_clip: 1.0
+  warmup_steps: 0
+  lr_scheduler: none  # none | cosine | linear
+
+logging:
+  log_dir: results
+  log_level: INFO
+  tensorboard: true
+  wandb: false
+  wandb_project: emm-dti
+  save_interval: 5
