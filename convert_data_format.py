@@ -114,7 +114,7 @@ def convert_data():
                     sequence = sequences_df[sequences_df['index'] == seq_idx]['sequence'].values[0]
                     all_proteins[seq_idx] = sequence
 
-                all_interactions.append((smiles_idx, seq_idx, interaction))
+                all_interactions.append((smiles_idx, seq_idx, interaction, split_name))
 
         except Exception as e:
             logger.error(f"  Error processing {split_name}: {e}")
@@ -154,13 +154,15 @@ def convert_data():
 
     # Interactions CSV
     interactions_data = []
-    for smiles_idx, seq_idx, interaction in all_interactions:
+    for smiles_idx, seq_idx, interaction, split_name in all_interactions:
         drug_id = smiles_id_map[smiles_idx]
         protein_id = seq_id_map[seq_idx]
+        mapped_split = "val" if split_name in ["validation", "valid"] else split_name
         interactions_data.append({
             "drug_id": drug_id,
             "protein_id": protein_id,
-            "interaction": interaction
+            "interaction": interaction,
+            "split": mapped_split
         })
 
     interactions_df = pd.DataFrame(interactions_data)

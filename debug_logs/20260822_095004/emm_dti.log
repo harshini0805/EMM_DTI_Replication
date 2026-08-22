@@ -1,0 +1,39 @@
+2026-08-22 09:50:04 - emm_dti - INFO - setup_logging:63 - Logging initialized. Log directory: /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_095004
+2026-08-22 09:50:04 - emm_dti - INFO - debug_training:31 - ================================================================================
+2026-08-22 09:50:04 - emm_dti - INFO - debug_training:32 - EMM-DTI DEBUG TRAINING - ENZYME DATASET
+2026-08-22 09:50:04 - emm_dti - INFO - debug_training:33 - ================================================================================
+2026-08-22 09:50:06 - emm_dti.utils.device - INFO - get_device:32 - CUDA available. Using GPU: NVIDIA GeForce GTX 1650
+2026-08-22 09:50:06 - emm_dti - INFO - debug_training:37 - Device: cuda
+2026-08-22 09:50:06 - emm_dti.utils.device - INFO - print_device_info:44 - ============================================================
+2026-08-22 09:50:06 - emm_dti.utils.device - INFO - print_device_info:45 - Device Information
+2026-08-22 09:50:06 - emm_dti.utils.device - INFO - print_device_info:46 - ============================================================
+2026-08-22 09:50:06 - emm_dti.utils.device - INFO - print_device_info:47 - PyTorch version: 2.2.2+cu121
+2026-08-22 09:50:06 - emm_dti.utils.device - INFO - print_device_info:48 - CUDA available: True
+2026-08-22 09:50:06 - emm_dti.utils.device - INFO - print_device_info:51 - CUDA version: 12.1
+2026-08-22 09:50:06 - emm_dti.utils.device - INFO - print_device_info:52 - Number of GPUs: 1
+2026-08-22 09:50:06 - emm_dti.utils.device - INFO - print_device_info:55 -   GPU 0: NVIDIA GeForce GTX 1650 (4.3 GB)
+2026-08-22 09:50:06 - emm_dti.utils.device - INFO - print_device_info:60 - CPUs available: 6
+2026-08-22 09:50:06 - emm_dti.utils.device - INFO - print_device_info:61 - ============================================================
+2026-08-22 09:50:06 - emm_dti - INFO - debug_training:46 - 
+================================================================================
+2026-08-22 09:50:06 - emm_dti - INFO - debug_training:47 - STEP 1: LOADING DATA
+2026-08-22 09:50:06 - emm_dti - INFO - debug_training:48 - ================================================================================
+2026-08-22 09:50:06 - emm_dti - INFO - debug_training:51 - Data directory: /mnt/d/Projects/EMM_DTI_Replication/data/enzyme
+2026-08-22 09:50:06 - emm_dti - INFO - debug_training:52 - Data directory exists: True
+2026-08-22 09:50:06 - emm_dti - INFO - debug_training:55 - Files in directory:
+2026-08-22 09:50:06 - emm_dti - INFO - debug_training:57 -   - drugs.csv: 5847 rows
+2026-08-22 09:50:06 - emm_dti - INFO - debug_training:57 -   - interactions.csv: 5847 rows
+2026-08-22 09:50:06 - emm_dti - INFO - debug_training:57 -   - proteins.csv: 5847 rows
+2026-08-22 09:50:06 - emm_dti.data.loaders - INFO - _load_data:204 - Loading data from /mnt/d/Projects/EMM_DTI_Replication/data/enzyme
+2026-08-22 09:50:07 - emm_dti.data.loaders - INFO - _load_data:228 - Loaded 5847 drugs, 5847 proteins, 5847 interactions
+2026-08-22 09:50:07 - emm_dti.data.loaders - INFO - _create_fcs_vocabulary:245 - Loading cached FCS patterns from /mnt/d/Projects/EMM_DTI_Replication/data/enzyme/.fcs_cache.pkl
+2026-08-22 09:50:07 - emm_dti.models.fcs - INFO - build_from_fcs:191 - Built fragment vocabulary with 84 tokens
+2026-08-22 09:50:07 - emm_dti.data.loaders - INFO - _create_fcs_vocabulary:253 - Loaded 84 patterns from cache
+2026-08-22 09:50:07 - emm_dti.data.loaders - INFO - __init__:200 - Data module initialized with 5847 total samples
+2026-08-22 09:50:07 - emm_dti - INFO - debug_training:67 - ✓ Data loaded successfully
+2026-08-22 09:50:07 - emm_dti - INFO - debug_training:68 -   Vocab size: 84
+2026-08-22 09:50:07 - emm_dti - ERROR - debug_training:73 - ✗ Data loading failed: 'DTIDataModule' object has no attribute 'fcs_patterns'
+Traceback (most recent call last):
+  File "/mnt/d/Projects/EMM_DTI_Replication/debug_enzyme.py", line 69, in debug_training
+    logger.info(f"  FCS patterns: {sum(len(p) for p in data_module.fcs_patterns.values())}")
+AttributeError: 'DTIDataModule' object has no attribute 'fcs_patterns'

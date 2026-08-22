@@ -1,0 +1,94 @@
+2026-08-22 09:51:31 - emm_dti - INFO - setup_logging:63 - Logging initialized. Log directory: /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_095131
+2026-08-22 09:51:31 - emm_dti - INFO - debug_training:31 - ================================================================================
+2026-08-22 09:51:31 - emm_dti - INFO - debug_training:32 - EMM-DTI DEBUG TRAINING - ENZYME DATASET
+2026-08-22 09:51:31 - emm_dti - INFO - debug_training:33 - ================================================================================
+2026-08-22 09:51:33 - emm_dti.utils.device - INFO - get_device:32 - CUDA available. Using GPU: NVIDIA GeForce GTX 1650
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:37 - Device: cuda
+2026-08-22 09:51:33 - emm_dti.utils.device - INFO - print_device_info:44 - ============================================================
+2026-08-22 09:51:33 - emm_dti.utils.device - INFO - print_device_info:45 - Device Information
+2026-08-22 09:51:33 - emm_dti.utils.device - INFO - print_device_info:46 - ============================================================
+2026-08-22 09:51:33 - emm_dti.utils.device - INFO - print_device_info:47 - PyTorch version: 2.2.2+cu121
+2026-08-22 09:51:33 - emm_dti.utils.device - INFO - print_device_info:48 - CUDA available: True
+2026-08-22 09:51:33 - emm_dti.utils.device - INFO - print_device_info:51 - CUDA version: 12.1
+2026-08-22 09:51:33 - emm_dti.utils.device - INFO - print_device_info:52 - Number of GPUs: 1
+2026-08-22 09:51:33 - emm_dti.utils.device - INFO - print_device_info:55 -   GPU 0: NVIDIA GeForce GTX 1650 (4.3 GB)
+2026-08-22 09:51:33 - emm_dti.utils.device - INFO - print_device_info:60 - CPUs available: 6
+2026-08-22 09:51:33 - emm_dti.utils.device - INFO - print_device_info:61 - ============================================================
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:46 - 
+================================================================================
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:47 - STEP 1: LOADING DATA
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:48 - ================================================================================
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:51 - Data directory: /mnt/d/Projects/EMM_DTI_Replication/data/enzyme
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:52 - Data directory exists: True
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:55 - Files in directory:
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:57 -   - drugs.csv: 5847 rows
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:57 -   - interactions.csv: 5847 rows
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:57 -   - proteins.csv: 5847 rows
+2026-08-22 09:51:33 - emm_dti.data.loaders - INFO - _load_data:204 - Loading data from /mnt/d/Projects/EMM_DTI_Replication/data/enzyme
+2026-08-22 09:51:33 - emm_dti.data.loaders - INFO - _load_data:228 - Loaded 5847 drugs, 5847 proteins, 5847 interactions
+2026-08-22 09:51:33 - emm_dti.data.loaders - INFO - _create_fcs_vocabulary:245 - Loading cached FCS patterns from /mnt/d/Projects/EMM_DTI_Replication/data/enzyme/.fcs_cache.pkl
+2026-08-22 09:51:33 - emm_dti.models.fcs - INFO - build_from_fcs:191 - Built fragment vocabulary with 84 tokens
+2026-08-22 09:51:33 - emm_dti.data.loaders - INFO - _create_fcs_vocabulary:253 - Loaded 84 patterns from cache
+2026-08-22 09:51:33 - emm_dti.data.loaders - INFO - __init__:200 - Data module initialized with 5847 total samples
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:67 - ✓ Data loaded successfully
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:68 -   Vocab size: 84
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:70 -   FCS patterns: 82
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:71 -   FCS patterns by length: [(1, 16), (2, 28), (3, 38)]
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:80 - 
+================================================================================
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:81 - STEP 2: CREATING DATA LOADERS
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:82 - ================================================================================
+2026-08-22 09:51:33 - emm_dti.data.loaders - INFO - create_loaders:357 - Creating DataLoaders via random split...
+2026-08-22 09:51:33 - emm_dti.data.loaders - INFO - __init__:63 - Initialized DTIDataset with 5847 samples (vocab_size=84, fcs_patterns=82)
+2026-08-22 09:51:33 - emm_dti.data.loaders - INFO - create_loaders:370 - Loaded splits: train=4,092, val=1,169, test=586
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:90 - Train loader: 256 batches
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:91 - Val loader: 74 batches
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:92 - Test loader: 37 batches
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:95 - 
+Sample batch from training set:
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:97 -   Drug indices shape: torch.Size([16, 100])
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:98 -   Protein indices shape: torch.Size([16, 200])
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:99 -   Labels shape: torch.Size([16])
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:100 -   Drug indices range: [0, 83]
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:101 -   Protein indices range: [0, 48]
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:102 -   Labels unique values: tensor([0., 1.])
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:105 - 
+================================================================================
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:106 - STEP 3: INITIALIZING MODEL
+2026-08-22 09:51:33 - emm_dti - INFO - debug_training:107 - ================================================================================
+2026-08-22 09:51:35 - emm_dti.models.mamba_ssm - INFO - __init__:116 - BidirectionalMambaSSM initialized: input_dim=128, hidden_dim=256, d_state=16, n_layers=2
+2026-08-22 09:51:35 - emm_dti.models.mamba_ssm - INFO - __init__:116 - BidirectionalMambaSSM initialized: input_dim=128, hidden_dim=256, d_state=16, n_layers=2
+2026-08-22 09:51:35 - emm_dti.models.emm_dti - INFO - __init__:159 - EMM-DTI model initialized with 4,017,183 parameters (Bidirectional Mamba-SSM, official Selective StateSpaceModel library)
+2026-08-22 09:51:35 - emm_dti - INFO - debug_training:119 - ✓ Model created
+2026-08-22 09:51:35 - emm_dti - INFO - debug_training:120 - EMM-DTI(
+  Architecture: FCS → Embedding → Mamba-SSM → Interaction Matrix → CNN → MLP
+  Mamba Type: Bidirectional Selective StateSpaceModel (Official Library)
+  vocab_size=84,
+  fcs_embedding_dim=128,
+  mamba_hidden_dim=256,
+  mamba_layers=2 (bidirectional),
+  cnn_kernel=3×3, cnn_out_channels=3,
+  total_parameters=4,017,183
+  Paper Faithful: YES ✓
+)
+2026-08-22 09:51:35 - emm_dti - INFO - debug_training:123 - 
+Testing forward pass with sample batch...
+2026-08-22 09:51:36 - emm_dti - ERROR - debug_training:131 - ✗ Forward pass failed: Expected all tensors to be on the same device, but found at least two devices, cpu and cuda:0! (when checking argument for argument index in method wrapper_CUDA__index_select)
+Traceback (most recent call last):
+  File "/mnt/d/Projects/EMM_DTI_Replication/debug_enzyme.py", line 126, in debug_training
+    output = model(sample_batch[0].to(device), sample_batch[1].to(device))
+  File "/home/harshini/.pyenv/versions/3.10.13/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/harshini/.pyenv/versions/3.10.13/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/mnt/d/Projects/EMM_DTI_Replication/emm_dti/models/emm_dti.py", line 203, in forward
+    drug_emb = self.embedding(drug_indices)  # (batch, drug_len, emb_dim)
+  File "/home/harshini/.pyenv/versions/3.10.13/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/harshini/.pyenv/versions/3.10.13/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/harshini/.pyenv/versions/3.10.13/lib/python3.10/site-packages/torch/nn/modules/sparse.py", line 163, in forward
+    return F.embedding(
+  File "/home/harshini/.pyenv/versions/3.10.13/lib/python3.10/site-packages/torch/nn/functional.py", line 2237, in embedding
+    return torch.embedding(weight, input, padding_idx, scale_grad_by_freq, sparse)
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cpu and cuda:0! (when checking argument for argument index in method wrapper_CUDA__index_select)

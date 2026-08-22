@@ -124,7 +124,7 @@ def train_seed(seed, seed_index):
     model = EMMDTI_SSM(
         vocab_size=len(data_module.fcs_vocab),
         fcs_embedding_dim=128,
-        mamba_hidden_dim=256,
+        mamba_hidden_dim=64,  # Standardized to match other 9 architectures
         mamba_n_layers=2,
         mamba_state_size=16,
         mamba_expand_factor=2,

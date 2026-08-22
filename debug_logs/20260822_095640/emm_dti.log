@@ -1,0 +1,97 @@
+2026-08-22 09:56:40 - emm_dti - INFO - setup_logging:63 - Logging initialized. Log directory: /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_095640
+2026-08-22 09:56:40 - emm_dti - INFO - debug_training:31 - ================================================================================
+2026-08-22 09:56:40 - emm_dti - INFO - debug_training:32 - EMM-DTI DEBUG TRAINING - ENZYME DATASET
+2026-08-22 09:56:40 - emm_dti - INFO - debug_training:33 - ================================================================================
+2026-08-22 09:56:42 - emm_dti.utils.device - INFO - get_device:32 - CUDA available. Using GPU: NVIDIA GeForce GTX 1650
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:37 - Device: cuda
+2026-08-22 09:56:42 - emm_dti.utils.device - INFO - print_device_info:44 - ============================================================
+2026-08-22 09:56:42 - emm_dti.utils.device - INFO - print_device_info:45 - Device Information
+2026-08-22 09:56:42 - emm_dti.utils.device - INFO - print_device_info:46 - ============================================================
+2026-08-22 09:56:42 - emm_dti.utils.device - INFO - print_device_info:47 - PyTorch version: 2.2.2+cu121
+2026-08-22 09:56:42 - emm_dti.utils.device - INFO - print_device_info:48 - CUDA available: True
+2026-08-22 09:56:42 - emm_dti.utils.device - INFO - print_device_info:51 - CUDA version: 12.1
+2026-08-22 09:56:42 - emm_dti.utils.device - INFO - print_device_info:52 - Number of GPUs: 1
+2026-08-22 09:56:42 - emm_dti.utils.device - INFO - print_device_info:55 -   GPU 0: NVIDIA GeForce GTX 1650 (4.3 GB)
+2026-08-22 09:56:42 - emm_dti.utils.device - INFO - print_device_info:60 - CPUs available: 6
+2026-08-22 09:56:42 - emm_dti.utils.device - INFO - print_device_info:61 - ============================================================
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:46 - 
+================================================================================
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:47 - STEP 1: LOADING DATA
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:48 - ================================================================================
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:51 - Data directory: /mnt/d/Projects/EMM_DTI_Replication/data/enzyme
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:52 - Data directory exists: True
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:55 - Files in directory:
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:57 -   - drugs.csv: 5847 rows
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:57 -   - interactions.csv: 5847 rows
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:57 -   - proteins.csv: 5847 rows
+2026-08-22 09:56:42 - emm_dti.data.loaders - INFO - _load_data:204 - Loading data from /mnt/d/Projects/EMM_DTI_Replication/data/enzyme
+2026-08-22 09:56:42 - emm_dti.data.loaders - INFO - _load_data:228 - Loaded 5847 drugs, 5847 proteins, 5847 interactions
+2026-08-22 09:56:42 - emm_dti.data.loaders - INFO - _create_fcs_vocabulary:245 - Loading cached FCS patterns from /mnt/d/Projects/EMM_DTI_Replication/data/enzyme/.fcs_cache.pkl
+2026-08-22 09:56:42 - emm_dti.models.fcs - INFO - build_from_fcs:191 - Built fragment vocabulary with 84 tokens
+2026-08-22 09:56:42 - emm_dti.data.loaders - INFO - _create_fcs_vocabulary:253 - Loaded 84 patterns from cache
+2026-08-22 09:56:42 - emm_dti.data.loaders - INFO - __init__:200 - Data module initialized with 5847 total samples
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:67 - ✓ Data loaded successfully
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:68 -   Vocab size: 84
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:70 -   FCS patterns: 82
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:71 -   FCS patterns by length: [(1, 16), (2, 28), (3, 38)]
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:80 - 
+================================================================================
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:81 - STEP 2: CREATING DATA LOADERS
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:82 - ================================================================================
+2026-08-22 09:56:42 - emm_dti.data.loaders - INFO - create_loaders:357 - Creating DataLoaders via random split...
+2026-08-22 09:56:42 - emm_dti.data.loaders - INFO - __init__:63 - Initialized DTIDataset with 5847 samples (vocab_size=84, fcs_patterns=82)
+2026-08-22 09:56:42 - emm_dti.data.loaders - INFO - create_loaders:370 - Loaded splits: train=4,092, val=1,169, test=586
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:90 - Train loader: 256 batches
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:91 - Val loader: 74 batches
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:92 - Test loader: 37 batches
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:95 - 
+Sample batch from training set:
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:97 -   Drug indices shape: torch.Size([16, 100])
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:98 -   Protein indices shape: torch.Size([16, 200])
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:99 -   Labels shape: torch.Size([16])
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:100 -   Drug indices range: [0, 83]
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:101 -   Protein indices range: [0, 74]
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:102 -   Labels unique values: tensor([0., 1.])
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:105 - 
+================================================================================
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:106 - STEP 3: INITIALIZING MODEL
+2026-08-22 09:56:42 - emm_dti - INFO - debug_training:107 - ================================================================================
+2026-08-22 09:56:44 - emm_dti.models.mamba_ssm - INFO - __init__:116 - BidirectionalMambaSSM initialized: input_dim=128, hidden_dim=256, d_state=16, n_layers=2
+2026-08-22 09:56:44 - emm_dti.models.mamba_ssm - INFO - __init__:116 - BidirectionalMambaSSM initialized: input_dim=128, hidden_dim=256, d_state=16, n_layers=2
+2026-08-22 09:56:44 - emm_dti.models.emm_dti - INFO - __init__:159 - EMM-DTI model initialized with 4,017,183 parameters (Bidirectional Mamba-SSM, official Selective StateSpaceModel library)
+2026-08-22 09:56:44 - emm_dti - INFO - debug_training:119 - ✓ Model created
+2026-08-22 09:56:44 - emm_dti - INFO - debug_training:120 - EMM-DTI(
+  Architecture: FCS → Embedding → Mamba-SSM → Interaction Matrix → CNN → MLP
+  Mamba Type: Bidirectional Selective StateSpaceModel (Official Library)
+  vocab_size=84,
+  fcs_embedding_dim=128,
+  mamba_hidden_dim=256,
+  mamba_layers=2 (bidirectional),
+  cnn_kernel=3×3, cnn_out_channels=3,
+  total_parameters=4,017,183
+  Paper Faithful: YES ✓
+)
+2026-08-22 09:56:44 - emm_dti - INFO - debug_training:124 - Model moved to device: cuda
+2026-08-22 09:56:44 - emm_dti - INFO - debug_training:127 - 
+Testing forward pass with sample batch...
+2026-08-22 09:56:45 - emm_dti - INFO - debug_training:131 - ✓ Forward pass successful
+2026-08-22 09:56:45 - emm_dti - INFO - debug_training:132 -   Output shape: torch.Size([16, 1])
+2026-08-22 09:56:45 - emm_dti - INFO - debug_training:133 -   Output range: [-0.0010, 0.0996]
+2026-08-22 09:56:45 - emm_dti - INFO - debug_training:139 - 
+================================================================================
+2026-08-22 09:56:45 - emm_dti - INFO - debug_training:140 - STEP 4: TRAINING
+2026-08-22 09:56:45 - emm_dti - INFO - debug_training:141 - ================================================================================
+2026-08-22 09:56:45 - emm_dti.training.trainer - INFO - __init__:58 - Trainer initialized. Output dir: /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_095640/checkpoints
+2026-08-22 09:56:45 - emm_dti.training.trainer - INFO - fit:283 - ============================================================
+2026-08-22 09:56:45 - emm_dti.training.trainer - INFO - fit:284 - Starting training
+2026-08-22 09:56:45 - emm_dti.training.trainer - INFO - fit:285 - ============================================================
+2026-08-22 09:56:46 - emm_dti.training.trainer - INFO - setup_optimizer:99 - Optimizer: adam, LR: 0.0003
+2026-08-22 09:56:46 - emm_dti - ERROR - debug_training:163 - ✗ Training failed: 'NoneType' object has no attribute 'lower'
+Traceback (most recent call last):
+  File "/mnt/d/Projects/EMM_DTI_Replication/debug_enzyme.py", line 147, in debug_training
+    history = trainer.fit(
+  File "/mnt/d/Projects/EMM_DTI_Replication/emm_dti/training/trainer.py", line 289, in fit
+    scheduler = self.setup_scheduler(optimizer, scheduler_name, epochs)
+  File "/mnt/d/Projects/EMM_DTI_Replication/emm_dti/training/trainer.py", line 119, in setup_scheduler
+    if scheduler_name.lower() == "none":
+AttributeError: 'NoneType' object has no attribute 'lower'

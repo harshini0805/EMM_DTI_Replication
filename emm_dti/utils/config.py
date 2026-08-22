@@ -36,8 +36,8 @@ class DatasetConfig:
 class ModelConfig:
     """Model architecture configuration."""
 
-    fcs_embedding_dim: int = 128
-    mamba_hidden_dim: int = 256
+    fcs_embedding_dim: int = 128  # Embedding dimension for FCS fragments
+    mamba_hidden_dim: int = 64    # Mamba d_model (standardized to match other 9 architectures)
     mamba_n_layers: int = 2
     mamba_state_size: int = 16
     mamba_expand_factor: int = 2

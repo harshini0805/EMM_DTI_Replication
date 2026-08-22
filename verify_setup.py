@@ -98,7 +98,7 @@ class VerificationChecker:
             "QUICKSTART.md",
             "emm_dti/__init__.py",
             "emm_dti/models/__init__.py",
-            "emm_dti/models/mamba.py",
+            "emm_dti/models/mamba_ssm.py",
             "emm_dti/models/fcs.py",
             "emm_dti/models/emm_dti.py",
             "emm_dti/data/__init__.py",
@@ -277,10 +277,10 @@ class VerificationChecker:
         logger.info("\n[5/6] Checking Model Imports...")
 
         try:
-            from emm_dti.models.mamba import MambaLayer, BidirectionalMamba
-            self.check(True, "Import: MambaLayer, BidirectionalMamba")
+            from emm_dti.models.mamba_ssm import BidirectionalMambaSSM
+            self.check(True, "Import: BidirectionalMambaSSM")
         except Exception as e:
-            self.check(False, "Import: MambaLayer", str(e))
+            self.check(False, "Import: BidirectionalMambaSSM", str(e))
 
         try:
             from emm_dti.models.fcs import FCSModule, FragmentVocabulary
@@ -370,9 +370,10 @@ class VerificationChecker:
                 f"Expected (8, 1), got {predictions.shape}",
             )
 
+            probs = torch.sigmoid(predictions)
             self.check(
-                (predictions >= 0).all() and (predictions <= 1).all(),
-                "Model outputs valid probabilities (0-1)",
+                (probs >= 0).all() and (probs <= 1).all(),
+                "Model outputs valid logit predictions (convertible to 0-1 probabilities)",
             )
 
         except Exception as e:

@@ -10,13 +10,13 @@ __author__ = "EMM-DTI Development Team"
 __all__ = [
     "EMMDTI",
     "FCSModule",
-    "MambaLayer",
+    "BidirectionalMambaSSM",
     "Config",
     "setup_logging",
 ]
 
 from emm_dti.models.emm_dti import EMMDTI
 from emm_dti.models.fcs import FCSModule
-from emm_dti.models.mamba import MambaLayer
+from emm_dti.models.mamba_ssm import BidirectionalMambaSSM
 from emm_dti.utils.config import Config
 from emm_dti.utils.logging_utils import setup_logging

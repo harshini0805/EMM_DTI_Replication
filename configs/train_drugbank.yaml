@@ -1,0 +1,39 @@
+# Configuration for EMM-DTI on Human dataset
+dataset:
+  name: drugbank
+  data_dir: data/drugbank
+  train_split: 0.8
+  val_split: 0.1
+  test_split: 0.1
+  random_seed: 42
+
+model:
+  fcs_embedding_dim: 128
+  mamba_hidden_dim: 64
+  mamba_n_layers: 2
+  mamba_state_size: 16
+  mamba_expand_factor: 2
+  cnn_out_channels: 3
+  cnn_kernel_size: 3
+  dropout: 0.3
+
+training:
+  batch_size: 16
+  learning_rate: 0.0003
+  epochs: 200
+  early_stopping_patience: 30
+  device: cuda
+  num_workers: 0
+  pin_memory: true
+  mixed_precision: false
+
+optimization:
+  optimizer: adam
+  weight_decay: 1.0e-04
+  gradient_clip: 1.0
+  lr_scheduler: none
+
+logging:
+  log_dir: results/drugbank
+  log_level: INFO
+  tensorboard: true

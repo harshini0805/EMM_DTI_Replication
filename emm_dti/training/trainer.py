@@ -48,7 +48,7 @@ class Trainer:
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-        self.best_auc = 0.0
+        self.best_aupr = 0.0  # Use AUPR (PR-AUC) for best model selection (better for imbalanced data)
         self.best_epoch = 0
         self.patience_counter = 0
 
@@ -110,13 +110,13 @@ class Trainer:
 
         Args:
             optimizer: Optimizer instance
-            scheduler_name: Scheduler type (none, cosine, linear)
+            scheduler_name: Scheduler type (none, cosine, linear, or None)
             epochs: Total number of epochs
 
         Returns:
             Scheduler instance or None
         """
-        if scheduler_name.lower() == "none":
+        if scheduler_name is None or (isinstance(scheduler_name, str) and scheduler_name.lower() == "none"):
             return None
         elif scheduler_name.lower() == "cosine":
             scheduler = CosineAnnealingLR(optimizer, T_max=epochs)
@@ -305,25 +305,34 @@ class Trainer:
             val_metrics = self.validate(val_loader, loss_fn)
             self.val_metrics.update(val_metrics)
 
-            # Log metrics
-            logger.info(f"Train: {Metrics.format_metrics(train_metrics, prefix='train_')}")
-            logger.info(f"Val:   {Metrics.format_metrics(val_metrics, prefix='val_')}")
+            # Log metrics in tabular format
+            if epoch == 0:
+                logger.info(f"{'Epoch':<6} | {'Loss (T/V)':<15} | {'AUC (T/V)':<15} | {'AUPR (T/V)':<15} | {'F1 (T/V)':<15}")
+                logger.info("-" * 80)
+            
+            logger.info(
+                f"{epoch+1:<6} | "
+                f"{train_metrics.get('loss', 0):.4f}/{val_metrics.get('loss', 0):.4f} | "
+                f"{train_metrics.get('auc', 0):.4f}/{val_metrics.get('auc', 0):.4f} | "
+                f"{train_metrics.get('aupr', 0):.4f}/{val_metrics.get('aupr', 0):.4f} | "
+                f"{train_metrics.get('f1', 0):.4f}/{val_metrics.get('f1', 0):.4f}"
+            )
 
             # Learning rate scheduling
             if scheduler is not None:
                 scheduler.step()
 
-            # Checkpointing
-            current_auc = val_metrics.get("auc", 0.0)
-            if current_auc > self.best_auc:
-                self.best_auc = current_auc
+            # Checkpointing (based on AUPR for imbalanced DTI data)
+            current_aupr = val_metrics.get("aupr", 0.0)
+            if current_aupr > self.best_aupr:
+                self.best_aupr = current_aupr
                 self.best_epoch = epoch
                 self.patience_counter = 0
 
                 # Save best model
                 checkpoint_path = self.output_dir / "best_model.pt"
                 self.model.save_checkpoint(checkpoint_path, optimizer.state_dict())
-                logger.info(f"Saved best model (AUC: {current_auc:.4f})")
+                logger.info(f"✓ Saved best model (AUPR: {current_aupr:.4f})")
             else:
                 self.patience_counter += 1
 
@@ -339,8 +348,23 @@ class Trainer:
             empty_cuda_cache()
 
         logger.info("=" * 60)
-        logger.info(f"Training complete. Best AUC: {self.best_auc:.4f}")
+        logger.info(f"Training complete. Best AUPR: {self.best_aupr:.4f} (epoch {self.best_epoch + 1})")
         logger.info("=" * 60)
+
+        import pandas as pd
+        
+        # Save training history to CSV
+        history_df = pd.DataFrame({
+            'epoch': range(1, len(self.train_metrics.history['loss']) + 1),
+            'train_loss': self.train_metrics.history['loss'],
+            'val_loss': self.val_metrics.history['loss'],
+            'train_auc': self.train_metrics.history.get('auc', []),
+            'val_auc': self.val_metrics.history.get('auc', []),
+            'train_aupr': self.train_metrics.history.get('aupr', []),
+            'val_aupr': self.val_metrics.history.get('aupr', []),
+        })
+        history_df.to_csv(self.output_dir / "training_history.csv", index=False)
+        logger.info(f"Saved training history to {self.output_dir / 'training_history.csv'}")
 
         return {
             "train": self.train_metrics.history,

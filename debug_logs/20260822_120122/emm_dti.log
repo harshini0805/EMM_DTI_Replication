@@ -1,0 +1,181 @@
+2026-08-22 12:01:22 - emm_dti - INFO - setup_logging:63 - Logging initialized. Log directory: /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_120122
+2026-08-22 12:01:22 - emm_dti - INFO - debug_training:31 - ================================================================================
+2026-08-22 12:01:22 - emm_dti - INFO - debug_training:32 - EMM-DTI DEBUG TRAINING - ENZYME DATASET
+2026-08-22 12:01:22 - emm_dti - INFO - debug_training:33 - ================================================================================
+2026-08-22 12:01:24 - emm_dti.utils.device - INFO - get_device:32 - CUDA available. Using GPU: NVIDIA GeForce GTX 1650
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:37 - Device: cuda
+2026-08-22 12:01:24 - emm_dti.utils.device - INFO - print_device_info:44 - ============================================================
+2026-08-22 12:01:24 - emm_dti.utils.device - INFO - print_device_info:45 - Device Information
+2026-08-22 12:01:24 - emm_dti.utils.device - INFO - print_device_info:46 - ============================================================
+2026-08-22 12:01:24 - emm_dti.utils.device - INFO - print_device_info:47 - PyTorch version: 2.2.2+cu121
+2026-08-22 12:01:24 - emm_dti.utils.device - INFO - print_device_info:48 - CUDA available: True
+2026-08-22 12:01:24 - emm_dti.utils.device - INFO - print_device_info:51 - CUDA version: 12.1
+2026-08-22 12:01:24 - emm_dti.utils.device - INFO - print_device_info:52 - Number of GPUs: 1
+2026-08-22 12:01:24 - emm_dti.utils.device - INFO - print_device_info:55 -   GPU 0: NVIDIA GeForce GTX 1650 (4.3 GB)
+2026-08-22 12:01:24 - emm_dti.utils.device - INFO - print_device_info:60 - CPUs available: 6
+2026-08-22 12:01:24 - emm_dti.utils.device - INFO - print_device_info:61 - ============================================================
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:46 - 
+================================================================================
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:47 - STEP 1: LOADING DATA
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:48 - ================================================================================
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:51 - Data directory: /mnt/d/Projects/EMM_DTI_Replication/data/enzyme
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:52 - Data directory exists: True
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:55 - Files in directory:
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:57 -   - drugs.csv: 5847 rows
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:57 -   - interactions.csv: 5847 rows
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:57 -   - proteins.csv: 5847 rows
+2026-08-22 12:01:24 - emm_dti.data.loaders - INFO - _load_data:204 - Loading data from /mnt/d/Projects/EMM_DTI_Replication/data/enzyme
+2026-08-22 12:01:24 - emm_dti.data.loaders - INFO - _load_data:228 - Loaded 5847 drugs, 5847 proteins, 5847 interactions
+2026-08-22 12:01:24 - emm_dti.data.loaders - INFO - _create_fcs_vocabulary:245 - Loading cached FCS patterns from /mnt/d/Projects/EMM_DTI_Replication/data/enzyme/.fcs_cache.pkl
+2026-08-22 12:01:24 - emm_dti.models.fcs - INFO - build_from_fcs:191 - Built fragment vocabulary with 84 tokens
+2026-08-22 12:01:24 - emm_dti.data.loaders - INFO - _create_fcs_vocabulary:253 - Loaded 84 patterns from cache
+2026-08-22 12:01:24 - emm_dti.data.loaders - INFO - __init__:200 - Data module initialized with 5847 total samples
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:67 - ✓ Data loaded successfully
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:68 -   Vocab size: 84
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:70 -   FCS patterns: 82
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:71 -   FCS patterns by length: [(1, 16), (2, 28), (3, 38)]
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:80 - 
+================================================================================
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:81 - STEP 2: CREATING DATA LOADERS
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:82 - ================================================================================
+2026-08-22 12:01:24 - emm_dti.data.loaders - INFO - create_loaders:357 - Creating DataLoaders via random split...
+2026-08-22 12:01:24 - emm_dti.data.loaders - INFO - __init__:63 - Initialized DTIDataset with 5847 samples (vocab_size=84, fcs_patterns=82)
+2026-08-22 12:01:24 - emm_dti.data.loaders - INFO - create_loaders:370 - Loaded splits: train=4,092, val=1,169, test=586
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:90 - Train loader: 256 batches
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:91 - Val loader: 74 batches
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:92 - Test loader: 37 batches
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:95 - 
+Sample batch from training set:
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:97 -   Drug indices shape: torch.Size([16, 100])
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:98 -   Protein indices shape: torch.Size([16, 200])
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:99 -   Labels shape: torch.Size([16])
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:100 -   Drug indices range: [0, 83]
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:101 -   Protein indices range: [0, 80]
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:102 -   Labels unique values: tensor([0., 1.])
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:105 - 
+================================================================================
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:106 - STEP 3: INITIALIZING MODEL
+2026-08-22 12:01:24 - emm_dti - INFO - debug_training:107 - ================================================================================
+2026-08-22 12:01:26 - emm_dti.models.mamba_ssm - INFO - __init__:119 - BidirectionalMambaSSM initialized: input_dim=128, hidden_dim=256, d_state=16, n_layers=2
+2026-08-22 12:01:26 - emm_dti.models.mamba_ssm - INFO - __init__:119 - BidirectionalMambaSSM initialized: input_dim=128, hidden_dim=256, d_state=16, n_layers=2
+2026-08-22 12:01:26 - emm_dti.models.emm_dti - INFO - __init__:159 - EMM-DTI model initialized with 4,017,185 parameters (Bidirectional Mamba-SSM, official Selective StateSpaceModel library)
+2026-08-22 12:01:26 - emm_dti - INFO - debug_training:119 - ✓ Model created
+2026-08-22 12:01:26 - emm_dti - INFO - debug_training:120 - EMM-DTI(
+  Architecture: FCS → Embedding → Mamba-SSM → Interaction Matrix → CNN → MLP
+  Mamba Type: Bidirectional Selective StateSpaceModel (Official Library)
+  vocab_size=84,
+  fcs_embedding_dim=128,
+  mamba_hidden_dim=256,
+  mamba_layers=2 (bidirectional),
+  cnn_kernel=3×3, cnn_out_channels=3,
+  total_parameters=4,017,185
+  Paper Faithful: YES ✓
+)
+2026-08-22 12:01:27 - emm_dti - INFO - debug_training:124 - Model moved to device: cuda
+2026-08-22 12:01:27 - emm_dti - INFO - debug_training:127 - 
+Testing forward pass with DETAILED DEBUGGING...
+2026-08-22 12:01:27 - emm_dti - INFO - debug_training:137 -   Drug embeddings: shape=torch.Size([16, 100, 128]), range=[-2.0317, 2.0110]
+2026-08-22 12:01:27 - emm_dti - INFO - debug_training:141 -   Protein embeddings: shape=torch.Size([16, 200, 128]), range=[-1.9925, 1.8062]
+2026-08-22 12:01:27 - emm_dti - INFO - debug_training:145 -   Drug Mamba output: shape=torch.Size([16, 100, 256]), range=[-0.5378, 0.5360]
+2026-08-22 12:01:27 - emm_dti - INFO - debug_training:148 -   Protein Mamba output: shape=torch.Size([16, 200, 256]), range=[-0.4293, 0.3661]
+2026-08-22 12:01:27 - emm_dti - INFO - debug_training:153 -   Drug pool: shape=torch.Size([16, 256]), range=[-0.4825, 0.4826]
+2026-08-22 12:01:27 - emm_dti - INFO - debug_training:154 -   Protein pool: shape=torch.Size([16, 256]), range=[-0.3678, 0.3530]
+2026-08-22 12:01:27 - emm_dti - INFO - debug_training:158 -   Interaction matrix: shape=torch.Size([16, 100, 200]), range=[0.1815, 0.6234]
+2026-08-22 12:01:27 - emm_dti - INFO - debug_training:159 -   Interaction matrix unique values (first 10): tensor([0.1815, 0.2037, 0.2060, 0.2061, 0.2074, 0.2086, 0.2127, 0.2151, 0.2157,
+        0.2184], device='cuda:0')
+2026-08-22 12:01:28 - emm_dti - INFO - debug_training:165 -   CNN features: shape=torch.Size([16, 3, 1, 1]), range=[0.0000, 0.2885]
+2026-08-22 12:01:28 - emm_dti - INFO - debug_training:168 -   CNN flattened: shape=torch.Size([16, 3]), range=[0.0000, 0.2885]
+2026-08-22 12:01:28 - emm_dti - INFO - debug_training:172 -   MLP input: shape=torch.Size([16, 515]), range=[-0.4825, 0.4826]
+2026-08-22 12:01:28 - emm_dti - INFO - debug_training:176 - ✓ Forward pass successful
+2026-08-22 12:01:28 - emm_dti - INFO - debug_training:177 -   Output shape: torch.Size([16, 1])
+2026-08-22 12:01:28 - emm_dti - INFO - debug_training:178 -   Output range: [-0.1327, 0.1856]
+2026-08-22 12:01:28 - emm_dti - INFO - debug_training:179 -   Output values (first 5): [0.032878514379262924, 0.11826345324516296, -0.05870106443762779, 0.1855567991733551, 0.11716297268867493]
+2026-08-22 12:01:28 - emm_dti - INFO - debug_training:185 - 
+================================================================================
+2026-08-22 12:01:28 - emm_dti - INFO - debug_training:186 - STEP 4: TRAINING
+2026-08-22 12:01:28 - emm_dti - INFO - debug_training:187 - ================================================================================
+2026-08-22 12:01:28 - emm_dti.training.trainer - INFO - __init__:58 - Trainer initialized. Output dir: /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_120122/checkpoints
+2026-08-22 12:01:28 - emm_dti.training.trainer - INFO - fit:283 - ============================================================
+2026-08-22 12:01:28 - emm_dti.training.trainer - INFO - fit:284 - Starting training
+2026-08-22 12:01:28 - emm_dti.training.trainer - INFO - fit:285 - ============================================================
+2026-08-22 12:01:28 - emm_dti.training.trainer - INFO - setup_optimizer:99 - Optimizer: adam, LR: 0.0003
+2026-08-22 12:01:28 - emm_dti.training.trainer - INFO - fit:296 - 
+Epoch 1/10
+2026-08-22 12:02:02 - emm_dti.training.trainer - INFO - fit:310 - Epoch  | Loss (T/V)      | AUC (T/V)       | AUPR (T/V)      | F1 (T/V)       
+2026-08-22 12:02:02 - emm_dti.training.trainer - INFO - fit:311 - --------------------------------------------------------------------------------
+2026-08-22 12:02:02 - emm_dti.training.trainer - INFO - fit:313 - 1      | 0.6966/0.6554 | 0.5141/0.6835 | 0.5049/0.6326 | 0.5037/0.6651
+2026-08-22 12:02:03 - emm_dti.models.emm_dti - INFO - save_checkpoint:250 - Saved checkpoint to /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_120122/checkpoints/best_model.pt
+2026-08-22 12:02:03 - emm_dti.training.trainer - INFO - fit:335 - Saved best model (AUC: 0.6835)
+2026-08-22 12:02:03 - emm_dti.utils.device - DEBUG - empty_cuda_cache:68 - CUDA cache cleared
+2026-08-22 12:02:03 - emm_dti.training.trainer - INFO - fit:296 - 
+Epoch 2/10
+2026-08-22 12:02:43 - emm_dti.training.trainer - INFO - fit:313 - 2      | 0.6451/0.5756 | 0.6818/0.7714 | 0.6547/0.7586 | 0.6599/0.6858
+2026-08-22 12:02:44 - emm_dti.models.emm_dti - INFO - save_checkpoint:250 - Saved checkpoint to /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_120122/checkpoints/best_model.pt
+2026-08-22 12:02:44 - emm_dti.training.trainer - INFO - fit:335 - Saved best model (AUC: 0.7714)
+2026-08-22 12:02:44 - emm_dti.utils.device - DEBUG - empty_cuda_cache:68 - CUDA cache cleared
+2026-08-22 12:02:44 - emm_dti.training.trainer - INFO - fit:296 - 
+Epoch 3/10
+2026-08-22 12:03:23 - emm_dti.training.trainer - INFO - fit:313 - 3      | 0.6059/0.6084 | 0.7410/0.7971 | 0.7266/0.7935 | 0.6910/0.6140
+2026-08-22 12:03:24 - emm_dti.models.emm_dti - INFO - save_checkpoint:250 - Saved checkpoint to /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_120122/checkpoints/best_model.pt
+2026-08-22 12:03:24 - emm_dti.training.trainer - INFO - fit:335 - Saved best model (AUC: 0.7971)
+2026-08-22 12:03:24 - emm_dti.utils.device - DEBUG - empty_cuda_cache:68 - CUDA cache cleared
+2026-08-22 12:03:24 - emm_dti.training.trainer - INFO - fit:296 - 
+Epoch 4/10
+2026-08-22 12:04:05 - emm_dti.training.trainer - INFO - fit:313 - 4      | 0.5759/0.5370 | 0.7706/0.8071 | 0.7554/0.7939 | 0.7146/0.7310
+2026-08-22 12:04:06 - emm_dti.models.emm_dti - INFO - save_checkpoint:250 - Saved checkpoint to /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_120122/checkpoints/best_model.pt
+2026-08-22 12:04:06 - emm_dti.training.trainer - INFO - fit:335 - Saved best model (AUC: 0.8071)
+2026-08-22 12:04:06 - emm_dti.utils.device - DEBUG - empty_cuda_cache:68 - CUDA cache cleared
+2026-08-22 12:04:06 - emm_dti.training.trainer - INFO - fit:296 - 
+Epoch 5/10
+2026-08-22 12:04:55 - emm_dti.training.trainer - INFO - fit:313 - 5      | 0.5490/0.5397 | 0.7971/0.8159 | 0.7819/0.8004 | 0.7337/0.7531
+2026-08-22 12:04:56 - emm_dti.models.emm_dti - INFO - save_checkpoint:250 - Saved checkpoint to /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_120122/checkpoints/best_model.pt
+2026-08-22 12:04:56 - emm_dti.training.trainer - INFO - fit:335 - Saved best model (AUC: 0.8159)
+2026-08-22 12:04:56 - emm_dti.utils.device - DEBUG - empty_cuda_cache:68 - CUDA cache cleared
+2026-08-22 12:04:56 - emm_dti.training.trainer - INFO - fit:296 - 
+Epoch 6/10
+2026-08-22 12:06:07 - emm_dti.training.trainer - INFO - fit:313 - 6      | 0.5374/0.5254 | 0.8068/0.8227 | 0.7923/0.8131 | 0.7497/0.7397
+2026-08-22 12:06:08 - emm_dti.models.emm_dti - INFO - save_checkpoint:250 - Saved checkpoint to /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_120122/checkpoints/best_model.pt
+2026-08-22 12:06:08 - emm_dti.training.trainer - INFO - fit:335 - Saved best model (AUC: 0.8227)
+2026-08-22 12:06:08 - emm_dti.utils.device - DEBUG - empty_cuda_cache:68 - CUDA cache cleared
+2026-08-22 12:06:08 - emm_dti.training.trainer - INFO - fit:296 - 
+Epoch 7/10
+2026-08-22 12:06:48 - emm_dti.training.trainer - INFO - fit:313 - 7      | 0.5183/0.4896 | 0.8226/0.8442 | 0.8099/0.8348 | 0.7597/0.7650
+2026-08-22 12:06:49 - emm_dti.models.emm_dti - INFO - save_checkpoint:250 - Saved checkpoint to /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_120122/checkpoints/best_model.pt
+2026-08-22 12:06:49 - emm_dti.training.trainer - INFO - fit:335 - Saved best model (AUC: 0.8442)
+2026-08-22 12:06:49 - emm_dti.utils.device - DEBUG - empty_cuda_cache:68 - CUDA cache cleared
+2026-08-22 12:06:49 - emm_dti.training.trainer - INFO - fit:296 - 
+Epoch 8/10
+2026-08-22 12:07:29 - emm_dti.training.trainer - INFO - fit:313 - 8      | 0.5064/0.4851 | 0.8313/0.8459 | 0.8098/0.8324 | 0.7719/0.7652
+2026-08-22 12:07:30 - emm_dti.models.emm_dti - INFO - save_checkpoint:250 - Saved checkpoint to /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_120122/checkpoints/best_model.pt
+2026-08-22 12:07:30 - emm_dti.training.trainer - INFO - fit:335 - Saved best model (AUC: 0.8459)
+2026-08-22 12:07:30 - emm_dti.utils.device - DEBUG - empty_cuda_cache:68 - CUDA cache cleared
+2026-08-22 12:07:30 - emm_dti.training.trainer - INFO - fit:296 - 
+Epoch 9/10
+2026-08-22 12:08:34 - emm_dti.training.trainer - INFO - fit:313 - 9      | 0.4983/0.5019 | 0.8396/0.8401 | 0.8225/0.8220 | 0.7757/0.7690
+2026-08-22 12:08:34 - emm_dti.utils.device - DEBUG - empty_cuda_cache:68 - CUDA cache cleared
+2026-08-22 12:08:34 - emm_dti.training.trainer - INFO - fit:296 - 
+Epoch 10/10
+2026-08-22 12:09:52 - emm_dti.training.trainer - INFO - fit:313 - 10     | 0.4868/0.4725 | 0.8467/0.8589 | 0.8243/0.8390 | 0.7808/0.7664
+2026-08-22 12:09:52 - emm_dti.models.emm_dti - INFO - save_checkpoint:250 - Saved checkpoint to /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_120122/checkpoints/best_model.pt
+2026-08-22 12:09:52 - emm_dti.training.trainer - INFO - fit:335 - Saved best model (AUC: 0.8589)
+2026-08-22 12:09:52 - emm_dti.utils.device - DEBUG - empty_cuda_cache:68 - CUDA cache cleared
+2026-08-22 12:09:52 - emm_dti.training.trainer - INFO - fit:350 - ============================================================
+2026-08-22 12:09:52 - emm_dti.training.trainer - INFO - fit:351 - Training complete. Best AUC: 0.8589
+2026-08-22 12:09:52 - emm_dti.training.trainer - INFO - fit:352 - ============================================================
+2026-08-22 12:09:52 - emm_dti.training.trainer - INFO - fit:367 - Saved training history to /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_120122/checkpoints/training_history.csv
+2026-08-22 12:09:52 - emm_dti - INFO - debug_training:205 - ✓ Training completed
+2026-08-22 12:09:52 - emm_dti - INFO - debug_training:206 -   History keys: dict_keys(['train', 'val'])
+2026-08-22 12:09:52 - emm_dti - INFO - debug_training:213 - 
+================================================================================
+2026-08-22 12:09:52 - emm_dti - INFO - debug_training:214 - STEP 5: EVALUATION
+2026-08-22 12:09:52 - emm_dti - INFO - debug_training:215 - ================================================================================
+2026-08-22 12:09:53 - emm_dti.models.emm_dti - INFO - load_checkpoint:242 - Loaded checkpoint from /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_120122/checkpoints/best_model.pt
+2026-08-22 12:09:54 - emm_dti - INFO - debug_training:227 - Predictions shape: (586,)
+2026-08-22 12:09:54 - emm_dti - INFO - debug_training:228 - Predictions range: [0.0069, 0.8651]
+2026-08-22 12:09:54 - emm_dti - INFO - debug_training:229 - Targets shape: (586,)
+2026-08-22 12:09:54 - emm_dti - INFO - debug_training:230 - Targets unique: [0. 1.]
+2026-08-22 12:09:54 - emm_dti - INFO - debug_training:233 - Test metrics: test_auc: 0.8536 | test_aupr: 0.8515 | test_accuracy: 0.7833 | test_precision: 0.8339 | test_recall: 0.7338 | test_f1: 0.7807 | test_specificity: 0.8381 | test_mcc: 0.5728
+2026-08-22 12:09:54 - emm_dti - INFO - debug_training:239 - 
+================================================================================
+2026-08-22 12:09:54 - emm_dti - INFO - debug_training:240 - Debug logs saved to: /mnt/d/Projects/EMM_DTI_Replication/debug_logs/20260822_120122
+2026-08-22 12:09:54 - emm_dti - INFO - debug_training:241 - ================================================================================

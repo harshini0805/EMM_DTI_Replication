@@ -48,11 +48,6 @@ class BidirectionalMambaSSM(nn.Module):
         """
         super().__init__()
 
-        if not HAS_MAMBA_SSM:
-            raise ImportError(
-                "mamba-ssm is required. Install with: pip install mamba-ssm"
-            )
-
         self.input_dim = input_dim
         self.hidden_dim = hidden_dim
         self.n_layers = n_layers
@@ -61,50 +56,65 @@ class BidirectionalMambaSSM(nn.Module):
         # Project input to hidden_dim if needed
         self.input_proj = nn.Linear(input_dim, hidden_dim) if input_dim != hidden_dim else None
 
-        # Forward Mamba layers
-        self.forward_layers = nn.ModuleList(
-            [
-                Mamba(
-                    d_model=hidden_dim,
-                    d_state=state_size,
-                    d_conv=4,  # Conv1D kernel size
-                    expand=2,  # Expansion factor
-                    dt_rank="auto",
-                    dt_min=0.001,
-                    dt_max=0.1,
-                    dt_init="random",
-                    dt_scale=1.0,
-                    bias=True,
-                    conv_bias=True,
-                    use_fast_path=True,
-                )
-                for i in range(n_layers)
-            ]
-        )
+        if not HAS_MAMBA_SSM:
+            logger.warning("mamba-ssm package not found. Using PyTorch BiGRU fallback.")
+            self.fallback_gru = nn.GRU(
+                input_size=hidden_dim,
+                hidden_size=hidden_dim // 2,
+                num_layers=n_layers,
+                batch_first=True,
+                bidirectional=True,
+                dropout=dropout if n_layers > 1 else 0.0,
+            )
+            self.output_proj = nn.Identity()
+        else:
+            # Forward Mamba layers
+            self.forward_layers = nn.ModuleList(
+                [
+                    Mamba(
+                        d_model=hidden_dim,
+                        d_state=state_size,
+                        d_conv=4,  # Conv1D kernel size
+                        expand=2,  # Expansion factor
+                        dt_rank="auto",
+                        dt_min=0.001,
+                        dt_max=0.1,
+                        dt_init="random",
+                        dt_scale=1.0,
+                        bias=True,
+                        conv_bias=True,
+                        use_fast_path=True,
+                    )
+                    for i in range(n_layers)
+                ]
+            )
 
-        # Backward Mamba layers (separate parameters)
-        self.backward_layers = nn.ModuleList(
-            [
-                Mamba(
-                    d_model=hidden_dim,
-                    d_state=state_size,
-                    d_conv=4,
-                    expand=2,
-                    dt_rank="auto",
-                    dt_min=0.001,
-                    dt_max=0.1,
-                    dt_init="random",
-                    dt_scale=1.0,
-                    bias=True,
-                    conv_bias=True,
-                    use_fast_path=True,
-                )
-                for i in range(n_layers)
-            ]
-        )
+            # Backward Mamba layers (separate parameters)
+            self.backward_layers = nn.ModuleList(
+                [
+                    Mamba(
+                        d_model=hidden_dim,
+                        d_state=state_size,
+                        d_conv=4,
+                        expand=2,
+                        dt_rank="auto",
+                        dt_min=0.001,
+                        dt_max=0.1,
+                        dt_init="random",
+                        dt_scale=1.0,
+                        bias=True,
+                        conv_bias=True,
+                        use_fast_path=True,
+                    )
+                    for i in range(n_layers)
+                ]
+            )
 
-        # Output projection: concatenates forward + backward → hidden_dim
-        self.output_proj = nn.Linear(2 * hidden_dim, hidden_dim)
+            # Output projection: concatenates forward + backward → hidden_dim
+            self.output_proj = nn.Linear(2 * hidden_dim, hidden_dim)
+
+            # Scale factor to amplify small Mamba outputs
+            self.output_scale = nn.Parameter(torch.ones(1) * 4.0)
 
         logger.info(
             f"BidirectionalMambaSSM initialized: "
@@ -114,7 +124,7 @@ class BidirectionalMambaSSM(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
-        Bidirectional forward pass using official Mamba-SSM.
+        Bidirectional forward pass using official Mamba-SSM (or PyTorch fallback).
 
         Args:
             x: Input tensor of shape (batch, seq_len, input_dim)
@@ -127,6 +137,12 @@ class BidirectionalMambaSSM(nn.Module):
         # Project input if needed
         if self.input_proj is not None:
             x = self.input_proj(x)  # (batch, seq_len, hidden_dim)
+
+        if not HAS_MAMBA_SSM:
+            out, _ = self.fallback_gru(x)
+            if hasattr(self, 'output_scale'):
+                out = out * self.output_scale
+            return out
 
         # Forward direction
         fwd = x
@@ -145,6 +161,10 @@ class BidirectionalMambaSSM(nn.Module):
 
         # Project to final dimension
         output = self.output_proj(combined)  # (batch, seq_len, hidden_dim)
+
+        # Scale output to amplify small Mamba values for better gradient flow
+        if hasattr(self, 'output_scale'):
+            output = output * self.output_scale
 
         return output
 
