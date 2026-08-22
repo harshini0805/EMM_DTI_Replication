@@ -189,11 +189,12 @@ class Trainer:
 
         # Compute metrics (convert logits to probabilities)
         import numpy as np
+        from scipy.special import expit  # Numerically stable sigmoid
 
         all_targets = np.array(all_targets)
         all_predictions = np.array(all_predictions).squeeze()
-        # Apply sigmoid to convert logits to probabilities
-        all_predictions = 1.0 / (1.0 + np.exp(-all_predictions))
+        # Apply sigmoid to convert logits to probabilities (numerically stable)
+        all_predictions = expit(all_predictions)  # Handles overflow safely
 
         metrics = Metrics.compute_metrics(all_targets, all_predictions)
         metrics["loss"] = total_loss / len(train_loader)
@@ -240,11 +241,12 @@ class Trainer:
 
         # Compute metrics (convert logits to probabilities)
         import numpy as np
+        from scipy.special import expit  # Numerically stable sigmoid
 
         all_targets = np.array(all_targets)
         all_predictions = np.array(all_predictions).squeeze()
-        # Apply sigmoid to convert logits to probabilities
-        all_predictions = 1.0 / (1.0 + np.exp(-all_predictions))
+        # Apply sigmoid to convert logits to probabilities (numerically stable)
+        all_predictions = expit(all_predictions)  # Handles overflow safely
 
         metrics = Metrics.compute_metrics(all_targets, all_predictions)
         metrics["loss"] = total_loss / len(val_loader)
@@ -323,7 +325,12 @@ class Trainer:
                 scheduler.step()
 
             # Checkpointing (based on AUPR for imbalanced DTI data)
+            import numpy as np
             current_aupr = val_metrics.get("aupr", 0.0)
+            # Handle NaN (treat as 0.0 for comparison)
+            if np.isnan(current_aupr):
+                current_aupr = 0.0
+
             if current_aupr > self.best_aupr:
                 self.best_aupr = current_aupr
                 self.best_epoch = epoch

@@ -230,15 +230,16 @@ def perform_cv(
                 predictions = np.array(predictions).squeeze()
                 targets = np.array(targets)
 
-                # Apply sigmoid to convert logits to probabilities
-                predictions = 1.0 / (1.0 + np.exp(-predictions))
+                # Apply sigmoid to convert logits to probabilities (numerically stable)
+                from scipy.special import expit
+                predictions = expit(predictions)  # Handles overflow safely
 
                 # Compute metrics
                 metrics = Metrics.compute_metrics(targets, predictions)
 
                 logger.info(
                     f"✓ Test Metrics: "
-                    f"AUC={metrics['roc_auc']:.4f} | "
+                    f"AUC={metrics['auc']:.4f} | "
                     f"AUPR={metrics['aupr']:.4f} | "
                     f"Acc={metrics['accuracy']:.4f}"
                 )
@@ -251,7 +252,7 @@ def perform_cv(
                 all_results["recall"].append(metrics["recall"])
                 all_results["specificity"].append(metrics["specificity"])
                 all_results["mcc"].append(metrics["mcc"])
-                all_results["roc_auc"].append(metrics["roc_auc"])
+                all_results["roc_auc"].append(metrics["auc"])
                 all_results["pr_auc"].append(metrics["aupr"])
 
             except Exception as e:
@@ -331,15 +332,15 @@ def main():
     logger.info("=" * 80)
 
     if cv_results["roc_auc"]:
-        roc_auc_mean = np.mean(cv_results["roc_auc"])
-        roc_auc_std = np.std(cv_results["roc_auc"])
+        auc_mean = np.mean(cv_results["roc_auc"])
+        auc_std = np.std(cv_results["roc_auc"])
         aupr_mean = np.mean(cv_results["pr_auc"])
         aupr_std = np.std(cv_results["pr_auc"])
         acc_mean = np.mean(cv_results["accuracy"])
         acc_std = np.std(cv_results["accuracy"])
 
         logger.info(f"Total folds completed: {len(cv_results['roc_auc'])}")
-        logger.info(f"\nROC-AUC:  {roc_auc_mean:.4f} ± {roc_auc_std:.4f}")
+        logger.info(f"\nAUC:      {auc_mean:.4f} ± {auc_std:.4f}")
         logger.info(f"AUPR:     {aupr_mean:.4f} ± {aupr_std:.4f}")
         logger.info(f"Accuracy: {acc_mean:.4f} ± {acc_std:.4f}")
 

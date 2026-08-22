@@ -110,7 +110,15 @@ class Metrics:
             metrics["f1"] = np.nan
 
         # ===== Confusion Matrix Components =====
-        tn, fp, fn, tp = confusion_matrix(y_true, y_pred_binary).ravel()
+        cm = confusion_matrix(y_true, y_pred_binary, labels=[0, 1])
+        if cm.shape == (2, 2):
+            tn, fp, fn, tp = cm.ravel()
+        else:
+            # Handle edge cases where not all classes are present
+            tn = cm[0, 0] if cm.shape[0] > 0 else 0
+            fp = cm[0, 1] if cm.shape[1] > 1 else 0
+            fn = cm[1, 0] if cm.shape[0] > 1 else 0
+            tp = cm[1, 1] if cm.shape[0] > 1 and cm.shape[1] > 1 else 0
         metrics["tp"] = int(tp)
         metrics["tn"] = int(tn)
         metrics["fp"] = int(fp)
