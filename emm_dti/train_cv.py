@@ -14,6 +14,7 @@ Usage:
 import argparse
 import torch
 import numpy as np
+import pandas as pd
 from pathlib import Path
 import logging
 from typing import Tuple, Dict, List
@@ -230,9 +231,8 @@ def perform_cv(
                 predictions = np.array(predictions).squeeze()
                 targets = np.array(targets)
 
-                # Apply sigmoid to convert logits to probabilities (numerically stable)
-                from scipy.special import expit
-                predictions = expit(predictions)  # Handles overflow safely
+                # Note: trainer.predict() already converts logits to probabilities via torch.sigmoid()
+                # No need to apply sigmoid again here
 
                 # Compute metrics
                 metrics = Metrics.compute_metrics(targets, predictions)
@@ -344,7 +344,22 @@ def main():
         logger.info(f"AUPR:     {aupr_mean:.4f} ± {aupr_std:.4f}")
         logger.info(f"Accuracy: {acc_mean:.4f} ± {acc_std:.4f}")
 
-        logger.info(f"\nDetailed results saved to: {output_dir}")
+        # Save detailed results to CSV
+        results_df = pd.DataFrame(cv_results)
+        results_csv = output_dir / "cv_results.csv"
+        results_df.to_csv(results_csv, index=False)
+        logger.info(f"\n✓ Detailed results saved to: {results_csv}")
+
+        # Save summary statistics
+        summary_csv = output_dir / "cv_summary.csv"
+        summary_data = {
+            "metric": ["AUC", "AUPR", "Accuracy"],
+            "mean": [auc_mean, aupr_mean, acc_mean],
+            "std": [auc_std, aupr_std, acc_std]
+        }
+        summary_df = pd.DataFrame(summary_data)
+        summary_df.to_csv(summary_csv, index=False)
+        logger.info(f"✓ Summary statistics saved to: {summary_csv}")
 
     logger.info("=" * 80)
     return 0
