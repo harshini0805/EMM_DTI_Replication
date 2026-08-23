@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-08-23T16:24:07.605441",
+  "cpu": {
+    "processor": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+    "cpu_count": 6,
+    "total_logical_cores": 12,
+    "cpu_freq_ghz": 3.301,
+    "total_ram_gb": 15.345542907714844
+  },
+  "gpu": {
+    "status": "Available",
+    "count": 1,
+    "devices": [
+      {
+        "id": 0,
+        "name": "NVIDIA GeForce GTX 1650",
+        "total_memory_gb": 3.99969482421875,
+        "compute_capability": "7.5"
+      }
+    ],
+    "driver_version": "12.8",
+    "cudnn_version": 91002
+  },
+  "software": {
+    "python_version": "3.12.5",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pytorch_version": "2.8.0+cu128",
+    "tensorflow_version": "2.19.0",
+    "numpy_version": "2.4.6",
+    "sklearn_version": "1.5.2"
+  }
+}

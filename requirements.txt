@@ -1,35 +1,17 @@
+# EMM-DTI: Enhanced Mamba with Multi-headed attention for Drug-Target Interaction prediction
 # Core ML framework
-torch>=2.2.0
-numpy>=1.24.0
+torch>=2.0.0
+numpy>=1.24.0,<2.0.0
 pandas>=2.0.0
 
-# Data processing
+# Data processing and ML
 scikit-learn>=1.3.0
 scipy>=1.11.0
 
-# Cheminformatics
-rdkit>=2023.09.1
+# Cheminformatics (optional but recommended for SMILES canonicalization)
+rdkit>=2023.09.0
 
-# Utilities
+# Configuration and utilities
 pyyaml>=6.0.0
 python-dotenv>=1.0.0
 tqdm>=4.66.0
-
-# Logging & Monitoring
-tensorboard>=2.14.0
-wandb>=0.15.0
-
-# Type checking & code quality
-mypy>=1.5.0
-black>=23.9.0
-flake8>=6.1.0
-isort>=5.12.0
-
-# Testing
-pytest>=7.4.0
-pytest-cov>=4.1.0
-
-# Development
-ipython>=8.15.0
-jupyter>=1.0.0
-notebook>=7.0.0
