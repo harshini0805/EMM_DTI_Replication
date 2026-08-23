@@ -8,6 +8,8 @@ Usage:
 
 import argparse
 import torch
+import json
+import numpy as np
 from pathlib import Path
 import logging
 
@@ -17,6 +19,7 @@ from emm_dti.utils.device import get_device, print_device_info
 from emm_dti.data.loaders import DTIDataModule
 from emm_dti.models.emm_dti import EMMDTI
 from emm_dti.training.trainer import Trainer
+from emm_dti.training.metrics import Metrics
 
 
 def parse_args():
@@ -88,6 +91,9 @@ def main():
     # Override config with command-line args
     if args.data_dir:
         config.dataset.data_dir = args.data_dir
+        # Auto-set log_dir based on dataset name
+        dataset_name = Path(args.data_dir).name
+        config.logging.log_dir = f"results/{dataset_name}"
     if args.batch_size:
         config.training.batch_size = args.batch_size
     if args.learning_rate:
@@ -192,9 +198,6 @@ def main():
         logger.info("\nEvaluating on test set...")
         model.load_checkpoint(output_dir / "best_model.pt")
 
-        from emm_dti.training.metrics import Metrics
-        import numpy as np
-
         predictions, targets = trainer.predict(test_loader)
         predictions = np.array(predictions).squeeze()
         targets = np.array(targets)
@@ -205,6 +208,83 @@ def main():
         # Save config
         config.save(output_dir / "config.yaml")
         logger.info(f"Config saved to: {output_dir / 'config.yaml'}")
+
+        # ===== Save Test Results =====
+        # For independent datasets, save test metrics for later aggregation
+        dataset_name = Path(config.dataset.data_dir).name
+        cv_results_dir = Path(config.logging.log_dir) / "cv_results"
+        cv_results_dir.mkdir(parents=True, exist_ok=True)
+
+        # Save this run's results
+        run_results = {
+            "dataset": dataset_name,
+            "seed": args.seed,
+            "metrics": {
+                "auc": float(test_metrics.get("auc", np.nan)),
+                "aupr": float(test_metrics.get("aupr", np.nan)),
+                "accuracy": float(test_metrics.get("accuracy", np.nan)),
+                "precision": float(test_metrics.get("precision", np.nan)),
+                "recall": float(test_metrics.get("recall", np.nan)),
+                "specificity": float(test_metrics.get("specificity", np.nan)),
+                "mcc": float(test_metrics.get("mcc", np.nan))
+            }
+        }
+
+        # Append to runs file
+        runs_file = cv_results_dir / "runs.json"
+        if runs_file.exists():
+            with open(runs_file, "r") as f:
+                all_runs = json.load(f)
+        else:
+            all_runs = []
+
+        all_runs.append(run_results)
+
+        with open(runs_file, "w") as f:
+            json.dump(all_runs, f, indent=2)
+
+        logger.info(f"✓ Run results saved to: {runs_file}")
+
+        # If this is the 5th seed, aggregate results
+        if len(all_runs) % 5 == 0:
+            all_metrics = {
+                "auc": [],
+                "aupr": [],
+                "accuracy": [],
+                "precision": [],
+                "recall": [],
+                "specificity": [],
+                "mcc": []
+            }
+
+            for run in all_runs[-5:]:  # Last 5 runs
+                for metric_name in all_metrics.keys():
+                    val = run["metrics"].get(metric_name)
+                    if val is not None and not np.isnan(val):
+                        all_metrics[metric_name].append(val)
+
+            # Compute aggregated statistics
+            summary_metrics = {}
+            for metric_name, values in all_metrics.items():
+                if values:
+                    summary_metrics[metric_name] = {
+                        "mean": float(np.mean(values)),
+                        "std": float(np.std(values))
+                    }
+
+            results_json = cv_results_dir / "results.json"
+            results_json_data = {
+                "dataset": dataset_name,
+                "num_seeds": 5,
+                "num_folds": 1,
+                "total_evaluations": 5,
+                "metrics": summary_metrics
+            }
+
+            with open(results_json, "w") as f:
+                json.dump(results_json_data, f, indent=2)
+
+            logger.info(f"✓ Aggregated results saved to: {results_json}")
 
         return 0
 

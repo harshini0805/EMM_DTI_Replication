@@ -15,6 +15,7 @@ import argparse
 import torch
 import numpy as np
 import pandas as pd
+import json
 from pathlib import Path
 import logging
 from typing import Tuple, Dict, List
@@ -360,6 +361,43 @@ def main():
         summary_df = pd.DataFrame(summary_data)
         summary_df.to_csv(summary_csv, index=False)
         logger.info(f"✓ Summary statistics saved to: {summary_csv}")
+
+        # Save results as JSON (including AUC and AUPR)
+        results_json = output_dir / "results.json"
+        dataset_name = Path(config.dataset.data_dir).name
+        metrics_dict = {
+            "auc": {"mean": float(auc_mean), "std": float(auc_std)},
+            "aupr": {"mean": float(aupr_mean), "std": float(aupr_std)},
+            "accuracy": {"mean": float(acc_mean), "std": float(acc_std)},
+            "precision": {
+                "mean": float(np.mean(cv_results["precision"])),
+                "std": float(np.std(cv_results["precision"]))
+            },
+            "recall": {
+                "mean": float(np.mean(cv_results["recall"])),
+                "std": float(np.std(cv_results["recall"]))
+            },
+            "specificity": {
+                "mean": float(np.mean(cv_results["specificity"])),
+                "std": float(np.std(cv_results["specificity"]))
+            },
+            "mcc": {
+                "mean": float(np.mean(cv_results["mcc"])),
+                "std": float(np.std(cv_results["mcc"]))
+            }
+        }
+
+        results_json_data = {
+            "dataset": dataset_name,
+            "num_seeds": len(args.seeds),
+            "num_folds": args.cv_folds,
+            "total_evaluations": len(cv_results["roc_auc"]),
+            "metrics": metrics_dict
+        }
+
+        with open(results_json, "w") as f:
+            json.dump(results_json_data, f, indent=2)
+        logger.info(f"✓ Results saved to: {results_json}")
 
     logger.info("=" * 80)
     return 0

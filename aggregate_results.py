@@ -12,15 +12,36 @@ from pathlib import Path
 import numpy as np
 
 def load_dataset_results(dataset: str) -> dict:
-    """Load results.json for a given dataset."""
-    results_path = Path("results") / dataset / "cv_results" / "results.json"
-    if results_path.exists():
+    """Load results.json for a given dataset (CV or independent)."""
+
+    # Try CV dataset format: results/{dataset}/results.json
+    cv_path = Path("results") / dataset / "results.json"
+    if cv_path.exists():
         try:
-            with open(results_path, "r") as f:
+            with open(cv_path, "r") as f:
                 return json.load(f)
         except Exception as e:
             print(f"  Error loading {dataset}: {e}")
             return None
+
+    # Try independent dataset format: results/{dataset}_independent/summary_results.json
+    independent_path = Path("results") / f"{dataset}_independent" / "summary_results.json"
+    if independent_path.exists():
+        try:
+            with open(independent_path, "r") as f:
+                metrics = json.load(f)
+            # Wrap in standard format
+            return {
+                "dataset": dataset,
+                "num_seeds": 5,
+                "num_folds": 1,
+                "total_evaluations": 5,
+                "metrics": metrics
+            }
+        except Exception as e:
+            print(f"  Error loading {dataset}: {e}")
+            return None
+
     return None
 
 def main():
